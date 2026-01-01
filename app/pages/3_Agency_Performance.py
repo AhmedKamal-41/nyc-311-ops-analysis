@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.db import get_engine
 
 st.set_page_config(page_title="Agency Performance", layout="wide")
-st.title("🏛️ Agency Performance Analysis")
+st.title("Agency Performance Analysis")
 
 st.markdown("""
 Monitor and analyze the performance of NYC agencies handling 311 service requests. 
@@ -36,12 +36,12 @@ try:
     df = pd.read_sql(query, engine)
     
     if df.empty:
-        st.warning("⚠️ No data available. Please refresh data using the sidebar.")
+        st.warning("No data available. Please refresh data using the sidebar.")
         st.stop()
     
     # Filter
     st.markdown("---")
-    st.markdown("## 🔍 Filter Options")
+    st.markdown("## Filter Options")
     st.caption("Select a specific agency to view detailed performance metrics")
     
     agencies = ['All Agencies'] + sorted(df['agency'].dropna().unique().tolist())
@@ -57,12 +57,12 @@ try:
         filtered_df = filtered_df[filtered_df['agency'] == selected_agency]
     
     if filtered_df.empty:
-        st.info("ℹ️ No data matches the selected filter.")
+        st.info("No data matches the selected filter.")
         st.stop()
     
     # Summary metrics
     st.markdown("---")
-    st.markdown("## 📊 Performance Summary")
+    st.markdown("## Performance Summary")
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -100,12 +100,12 @@ try:
     
     # Display data
     st.markdown("---")
-    st.markdown("## 📈 Performance Trends")
+    st.markdown("## Performance Trends")
     
     col1, col2 = st.columns([1, 1])
     
     with col1:
-        st.markdown("### 📋 Performance Data Table")
+        st.markdown("### Performance Data Table")
         st.caption("Detailed monthly performance metrics")
         display_df = filtered_df.copy()
         st.dataframe(
@@ -119,7 +119,7 @@ try:
         )
     
     with col2:
-        st.markdown("### 📊 Performance Trends Visualization")
+        st.markdown("### Performance Trends Visualization")
         st.caption("Dual-axis chart showing request volume and resolution times")
         try:
             import plotly.graph_objects as go
@@ -139,10 +139,10 @@ try:
                     y=filtered_df['requests'],
                     mode='lines+markers',
                     name='Request Volume',
-                    line=dict(color='#1f77b4', width=3),
+                    line=dict(color='#2563eb', width=3),
                     marker=dict(size=8),
                     fill='tozeroy',
-                    fillcolor='rgba(31, 119, 180, 0.2)'
+                    fillcolor='rgba(37, 99, 235, 0.15)'
                 ),
                 row=1, col=1
             )
@@ -154,7 +154,7 @@ try:
                     y=filtered_df['median_resolution_hours'],
                     mode='lines+markers',
                     name='Median Resolution',
-                    line=dict(color='#ff7f0e', width=3),
+                    line=dict(color='#f59e0b', width=3),
                     marker=dict(size=8)
                 ),
                 row=2, col=1
@@ -166,7 +166,7 @@ try:
                     y=filtered_df['p90_resolution_hours'],
                     mode='lines+markers',
                     name='90th Percentile',
-                    line=dict(color='#d62728', width=2, dash='dash'),
+                    line=dict(color='#ef4444', width=2, dash='dash'),
                     marker=dict(size=6)
                 ),
                 row=2, col=1
@@ -189,15 +189,15 @@ try:
             fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
             
             # Requests
-            ax1.plot(filtered_df['month'], filtered_df['requests'], marker='o', color='blue', linewidth=2, markersize=8)
+            ax1.plot(filtered_df['month'], filtered_df['requests'], marker='o', color='#2563eb', linewidth=2, markersize=8)
             ax1.set_xlabel('Month', fontsize=12)
             ax1.set_ylabel('Number of Requests', fontsize=12)
             ax1.set_title('Request Volume Over Time', fontsize=14, fontweight='bold')
             ax1.grid(True, alpha=0.3)
             
             # Resolution hours
-            ax2.plot(filtered_df['month'], filtered_df['median_resolution_hours'], marker='o', color='orange', linewidth=2, markersize=8, label='Median')
-            ax2.plot(filtered_df['month'], filtered_df['p90_resolution_hours'], marker='s', color='red', linewidth=2, markersize=6, linestyle='--', label='90th Percentile')
+            ax2.plot(filtered_df['month'], filtered_df['median_resolution_hours'], marker='o', color='#f59e0b', linewidth=2, markersize=8, label='Median')
+            ax2.plot(filtered_df['month'], filtered_df['p90_resolution_hours'], marker='s', color='#ef4444', linewidth=2, markersize=6, linestyle='--', label='90th Percentile')
             ax2.set_xlabel('Month', fontsize=12)
             ax2.set_ylabel('Resolution Time (Hours)', fontsize=12)
             ax2.set_title('Resolution Time Performance', fontsize=14, fontweight='bold')
@@ -210,7 +210,7 @@ try:
     # Agency comparison if viewing all agencies
     if selected_agency == 'All Agencies':
         st.markdown("---")
-        st.markdown("## 🏆 Agency Comparison")
+        st.markdown("## Agency Comparison")
         st.caption("Compare performance metrics across all agencies")
         
         agency_summary = df.groupby('agency').agg({
@@ -221,7 +221,7 @@ try:
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 📊 Top Agencies by Request Volume")
+            st.markdown("### Top Agencies by Request Volume")
             try:
                 import plotly.graph_objects as go
                 fig = go.Figure()
@@ -229,7 +229,7 @@ try:
                     x=agency_summary['requests'],
                     y=agency_summary['agency'],
                     orientation='h',
-                    marker_color='#1f77b4',
+                    marker_color='#2563eb',
                     text=agency_summary['requests'],
                     textposition='outside',
                     texttemplate='%{text:,.0f}'
@@ -246,7 +246,7 @@ try:
                 st.dataframe(agency_summary[['agency', 'requests']], use_container_width=True, hide_index=True)
         
         with col2:
-            st.markdown("### ⏱️ Agencies by Average Resolution Time")
+            st.markdown("### Agencies by Average Resolution Time")
             resolution_summary = df.groupby('agency')['median_resolution_hours'].mean().sort_values().head(15).reset_index()
             try:
                 import plotly.graph_objects as go
@@ -255,7 +255,7 @@ try:
                     x=resolution_summary['median_resolution_hours'],
                     y=resolution_summary['agency'],
                     orientation='h',
-                    marker_color='#ff7f0e',
+                    marker_color='#f59e0b',
                     text=resolution_summary['median_resolution_hours'].round(1),
                     textposition='outside',
                     texttemplate='%{text:.1f} hrs'
@@ -272,5 +272,5 @@ try:
                 st.dataframe(resolution_summary, use_container_width=True, hide_index=True)
     
 except Exception as e:
-    st.error(f"❌ Error loading data: {str(e)}")
-    st.info("💡 Make sure Postgres is running and data has been loaded.")
+    st.error(f"Error loading data: {str(e)}")
+    st.info("Make sure Postgres is running and data has been loaded.")

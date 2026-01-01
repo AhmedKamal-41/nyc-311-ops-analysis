@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.db import get_engine
 
 st.set_page_config(page_title="Complaints Analysis", layout="wide")
-st.title("📋 Complaints Analysis - Top Complaints by Borough")
+st.title("Complaints Analysis - Top Complaints by Borough")
 
 st.markdown("""
 Analyze the most common complaint types across NYC boroughs. Filter by borough and month to identify 
@@ -35,12 +35,12 @@ try:
     df = pd.read_sql(query, engine)
     
     if df.empty:
-        st.warning("⚠️ No data available. Please refresh data using the sidebar.")
+        st.warning("No data available. Please refresh data using the sidebar.")
         st.stop()
     
     # Filters
     st.markdown("---")
-    st.markdown("## 🔍 Filter Options")
+    st.markdown("## Filter Options")
     st.caption("Select specific borough and/or month to narrow down the analysis")
     
     col1, col2 = st.columns(2)
@@ -69,12 +69,12 @@ try:
         filtered_df = filtered_df[filtered_df['month'] == selected_month]
     
     if filtered_df.empty:
-        st.info("ℹ️ No data matches the selected filters. Try selecting different options.")
+        st.info("No data matches the selected filters. Try selecting different options.")
         st.stop()
     
     # Summary stats
     st.markdown("---")
-    st.markdown("## 📊 Summary Statistics")
+    st.markdown("## Summary Statistics")
     
     col1, col2, col3 = st.columns(3)
     
@@ -104,12 +104,12 @@ try:
     
     # Display data
     st.markdown("---")
-    st.markdown("## 📋 Detailed Analysis")
+    st.markdown("## Detailed Analysis")
     
     col1, col2 = st.columns([1, 1])
     
     with col1:
-        st.markdown("### 📊 Top Complaints Data Table")
+        st.markdown("### Top Complaints Data Table")
         st.caption("Ranked list of top complaint types with request counts")
         display_df = filtered_df.copy()
         if selected_month == 'All Months':
@@ -126,7 +126,7 @@ try:
         )
     
     with col2:
-        st.markdown("### 📈 Complaints Visualization")
+        st.markdown("### Complaints Visualization")
         st.caption("Bar chart showing top complaint types by volume")
         # Prepare data for chart
         chart_df = filtered_df.copy()
@@ -148,7 +148,7 @@ try:
                 x=chart_df[y_col],
                 y=chart_df[x_col],
                 orientation='h',
-                marker_color='#2ca02c',
+                marker_color='#10b981',
                 text=chart_df[y_col],
                 textposition='outside',
                 texttemplate='%{text:,.0f}'
@@ -164,7 +164,7 @@ try:
         except ImportError:
             import matplotlib.pyplot as plt
             fig, ax = plt.subplots(figsize=(10, 8))
-            ax.barh(chart_df[x_col], chart_df[y_col], color='green')
+            ax.barh(chart_df[x_col], chart_df[y_col], color='#10b981')
             ax.set_xlabel('Number of Requests', fontsize=12)
             ax.set_ylabel('Complaint Type', fontsize=12)
             ax.set_title('Top Complaints by Volume', fontsize=14, fontweight='bold')
@@ -174,7 +174,7 @@ try:
     # Borough comparison if viewing all boroughs
     if selected_borough == 'All Boroughs':
         st.markdown("---")
-        st.markdown("## 🗺️ Borough Comparison")
+        st.markdown("## Borough Comparison")
         st.caption("Compare complaint volumes across different boroughs")
         
         borough_summary = filtered_df.groupby('borough')['requests'].sum().sort_values(ascending=False).reset_index()
@@ -185,7 +185,7 @@ try:
             fig.add_trace(go.Bar(
                 x=borough_summary['borough'],
                 y=borough_summary['requests'],
-                marker_color='#1f77b4',
+                marker_color='#2563eb',
                 text=borough_summary['requests'],
                 textposition='outside',
                 texttemplate='%{text:,.0f}'
@@ -201,5 +201,5 @@ try:
             st.dataframe(borough_summary, use_container_width=True, hide_index=True)
     
 except Exception as e:
-    st.error(f"❌ Error loading data: {str(e)}")
-    st.info("💡 Make sure Postgres is running and data has been loaded.")
+    st.error(f"Error loading data: {str(e)}")
+    st.info("Make sure Postgres is running and data has been loaded.")

@@ -3,7 +3,6 @@ Overview Page - KPI Metrics and Trends
 """
 import streamlit as st
 import pandas as pd
-from datetime import datetime, timedelta
 import sys
 import os
 from sqlalchemy import text
@@ -13,7 +12,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.db import get_engine
 
 st.set_page_config(page_title="Overview - KPI Metrics", layout="wide")
-st.title("📊 Overview - Key Performance Indicators")
+st.title("Overview - Key Performance Indicators")
 
 st.markdown("""
 This page provides comprehensive KPI metrics and trend analysis for NYC 311 service requests. 
@@ -26,10 +25,7 @@ days = st.session_state.get('days', 30)
 try:
     engine = get_engine()
     
-    # Calculate date threshold
-    threshold_date = (datetime.now() - timedelta(days=days)).date()
-    
-    # Load KPI monthly data
+    # Load KPI monthly data (show all available data)
     query = text("""
     SELECT 
         month,
@@ -39,20 +35,19 @@ try:
         median_resolution_hours,
         p90_resolution_hours
     FROM marts.kpi_monthly
-    WHERE month >= :threshold_date
     ORDER BY month
     """)
     
-    df = pd.read_sql(query, engine, params={'threshold_date': threshold_date})
+    df = pd.read_sql(query, engine)
     
     if df.empty:
-        st.warning("⚠️ No data available for the selected time period. Please refresh data using the sidebar.")
+        st.warning("No data available. Please refresh data using the sidebar.")
         st.stop()
     
     # Display summary metrics
     st.markdown("---")
-    st.markdown("## 📈 Summary Metrics (Aggregated)")
-    st.caption(f"Data aggregated across all months from {df['month'].min()} to {df['month'].max()}")
+    st.markdown("## Summary Metrics (Aggregated)")
+    st.caption(f"Data aggregated across all available months from {df['month'].min()} to {df['month'].max()}")
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -91,13 +86,13 @@ try:
     st.divider()
     
     # Main Charts Section
-    st.markdown("## 📊 Trend Analysis")
+    st.markdown("## Trend Analysis")
     st.caption("Visual representation of key metrics over time")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📈 Total Requests Trend Over Time")
+        st.markdown("### Total Requests Trend Over Time")
         st.caption("Monthly volume of service requests received")
         try:
             import plotly.graph_objects as go
@@ -107,10 +102,10 @@ try:
                 y=df['total_requests'],
                 mode='lines+markers',
                 name='Total Requests',
-                line=dict(color='#1f77b4', width=3),
+                line=dict(color='#2563eb', width=3),
                 marker=dict(size=8),
                 fill='tozeroy',
-                fillcolor='rgba(31, 119, 180, 0.1)'
+                fillcolor='rgba(37, 99, 235, 0.1)'
             ))
             fig.update_layout(
                 xaxis_title="Month",
@@ -135,7 +130,7 @@ try:
             st.pyplot(fig)
     
     with col2:
-        st.markdown("### ⏱️ Median Resolution Time Trend")
+        st.markdown("### Median Resolution Time Trend")
         st.caption("Average time to resolve requests (in hours)")
         try:
             import plotly.graph_objects as go
@@ -145,10 +140,10 @@ try:
                 y=df['median_resolution_hours'],
                 mode='lines+markers',
                 name='Median Resolution Hours',
-                line=dict(color='#ff7f0e', width=3),
+                line=dict(color='#f59e0b', width=3),
                 marker=dict(size=8),
                 fill='tozeroy',
-                fillcolor='rgba(255, 127, 14, 0.1)'
+                fillcolor='rgba(245, 158, 11, 0.1)'
             ))
             fig.update_layout(
                 xaxis_title="Month",
@@ -163,7 +158,7 @@ try:
         except ImportError:
             import matplotlib.pyplot as plt
             fig, ax = plt.subplots(figsize=(10, 5))
-            ax.plot(df['month'], df['median_resolution_hours'], marker='o', color='orange', linewidth=2, markersize=8)
+            ax.plot(df['month'], df['median_resolution_hours'], marker='o', color='#f59e0b', linewidth=2, markersize=8)
             ax.set_xlabel('Month', fontsize=12)
             ax.set_ylabel('Resolution Time (Hours)', fontsize=12)
             ax.set_title('Median Resolution Time Trend', fontsize=14, fontweight='bold')
@@ -174,12 +169,12 @@ try:
     
     # Additional visualizations
     st.divider()
-    st.markdown("## 📊 Detailed Analytics")
+    st.markdown("## Detailed Analytics")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### ⏱️ Resolution Time Comparison")
+        st.markdown("### Resolution Time Comparison")
         st.caption("Median vs 90th Percentile resolution times")
         try:
             import plotly.graph_objects as go
@@ -188,7 +183,7 @@ try:
                 x=df['month'],
                 y=df['median_resolution_hours'],
                 name='Median Resolution Time',
-                marker_color='#1f77b4',
+                marker_color='#2563eb',
                 text=df['median_resolution_hours'].round(1),
                 textposition='outside'
             ))
@@ -196,7 +191,7 @@ try:
                 x=df['month'],
                 y=df['p90_resolution_hours'],
                 name='90th Percentile Resolution Time',
-                marker_color='#ff7f0e',
+                marker_color='#f59e0b',
                 text=df['p90_resolution_hours'].round(1),
                 textposition='outside'
             ))
@@ -213,7 +208,7 @@ try:
             st.info("Chart data unavailable")
     
     with col2:
-        st.markdown("### 📊 Request Status Over Time")
+        st.markdown("### Request Status Over Time")
         st.caption("Open vs Closed requests comparison")
         try:
             import plotly.graph_objects as go
@@ -223,18 +218,18 @@ try:
                 y=df['open_requests'],
                 mode='lines+markers',
                 name='Open Requests',
-                line=dict(color='#ff6b6b', width=2),
+                line=dict(color='#ef4444', width=2),
                 fill='tonexty',
-                fillcolor='rgba(255, 107, 107, 0.2)'
+                fillcolor='rgba(239, 68, 68, 0.15)'
             ))
             fig.add_trace(go.Scatter(
                 x=df['month'],
                 y=df['closed_requests'],
                 mode='lines+markers',
                 name='Closed Requests',
-                line=dict(color='#51cf66', width=2),
+                line=dict(color='#10b981', width=2),
                 fill='tozeroy',
-                fillcolor='rgba(81, 207, 102, 0.2)'
+                fillcolor='rgba(16, 185, 129, 0.15)'
             ))
             fig.update_layout(
                 xaxis_title="Month",
@@ -249,7 +244,7 @@ try:
     
     # Performance indicators
     st.markdown("---")
-    st.markdown("## 🎯 Performance Indicators")
+    st.markdown("## Performance Indicators")
     st.caption("Key metrics derived from the data")
     
     col1, col2, col3, col4 = st.columns(4)
@@ -288,7 +283,7 @@ try:
     
     # Data table
     st.divider()
-    st.markdown("## 📋 Monthly KPI Data Table")
+    st.markdown("## Monthly KPI Data Table")
     st.caption("Detailed monthly breakdown of all key performance indicators")
     st.dataframe(
         df.style.format({
@@ -303,5 +298,5 @@ try:
     )
     
 except Exception as e:
-    st.error(f"❌ Error loading data: {str(e)}")
-    st.info("💡 Make sure Postgres is running and data has been loaded. Use the sidebar to refresh data.")
+    st.error(f"Error loading data: {str(e)}")
+    st.info("Make sure Postgres is running and data has been loaded. Use the sidebar to refresh data.")
