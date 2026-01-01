@@ -2,6 +2,17 @@
 
 A Postgres-backed Streamlit analytics application for analyzing NYC 311 service requests. This project provides a complete data pipeline from raw API data to interactive visualizations, enabling analysis of complaint trends, agency performance, and resolution metrics across New York City boroughs.
 
+**Live Application:** [https://nyc-311-ops-analysis.streamlit.app/](https://nyc-311-ops-analysis.streamlit.app/)
+
+## Tech Stack
+
+- **Frontend/Visualization:** Streamlit, Plotly
+- **Backend/Database:** PostgreSQL (Supabase)
+- **Data Processing:** Python, Pandas, SQLAlchemy
+- **Data Source:** NYC Open Data API (Socrata)
+- **Deployment:** Streamlit Community Cloud
+- **Containerization:** Docker Compose (for local development)
+
 ## Architecture
 
 The application follows a layered data architecture:
@@ -111,12 +122,14 @@ psql $DATABASE_URL -f sql/marts/00_build_all_marts.sql
 
 ### Run Application
 
-Start the Streamlit dashboard:
+Start the Streamlit dashboard locally:
 ```bash
 streamlit run app/app.py
 ```
 
 The dashboard will be available at `http://localhost:8501`
+
+**Or access the live deployment:** [https://nyc-311-ops-analysis.streamlit.app/](https://nyc-311-ops-analysis.streamlit.app/)
 
 ## Data
 
