@@ -1,0 +1,13 @@
+Column,Missing Count,Missing %,Non-Null Count
+closed_date,23832,21.66,86213
+city,3808,3.46,106237
+descriptor,1329,1.21,108716
+latitude,1281,1.16,108764
+longitude,1281,1.16,108764
+incident_zip,921,0.84,109124
+unique_key,0,0.0,110045
+created_date,0,0.0,110045
+agency,0,0.0,110045
+borough,0,0.0,110045
+complaint_type,0,0.0,110045
+status,0,0.0,110045
