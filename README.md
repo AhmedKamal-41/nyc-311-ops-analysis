@@ -1,17 +1,16 @@
 # NYC 311 Analytics Dashboard
 
+**Your Data-Driven Insights Platform for NYC Service Requests**
+
+---
+
+![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen) ![Python](https://img.shields.io/badge/Python-3.8+-blue) ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue) ![Pandas](https://img.shields.io/badge/Pandas-2.0+-orange) ![Plotly](https://img.shields.io/badge/Plotly-5.0+-blue) ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0+-green)
+
+🌐 **[Live Website](https://nyc-311-ops-analysis.streamlit.app/)** | 📊 **NYC Open Data API** | 🚀 **Streamlit Cloud**
+
+---
+
 A Postgres-backed Streamlit analytics application for analyzing NYC 311 service requests. This project provides a complete data pipeline from raw API data to interactive visualizations, enabling analysis of complaint trends, agency performance, and resolution metrics across New York City boroughs.
-
-**Live Application:** [https://nyc-311-ops-analysis.streamlit.app/](https://nyc-311-ops-analysis.streamlit.app/)
-
-## Tech Stack
-
-- **Frontend/Visualization:** Streamlit, Plotly
-- **Backend/Database:** PostgreSQL (Supabase)
-- **Data Processing:** Python, Pandas, SQLAlchemy
-- **Data Source:** NYC Open Data API (Socrata)
-- **Deployment:** Streamlit Community Cloud
-- **Containerization:** Docker Compose (for local development)
 
 ## Architecture
 
