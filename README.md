@@ -39,6 +39,28 @@ Data flows from the Socrata API → CSV files → Postgres raw schema → core s
 3. Docker Compose and Python will be available in the Codespaces environment
 4. Follow the same setup steps as local setup
 
+## Configuration
+
+### Local Development
+Set `DATABASE_URL` in your `.env` file:
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/nyc311
+```
+
+Alternatively, you can set it as an environment variable in your shell:
+```bash
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/nyc311
+```
+
+### Streamlit Cloud Deployment
+1. Go to your app's settings in Streamlit Cloud
+2. Navigate to "Advanced settings" → "Secrets"
+3. Add your DATABASE_URL in TOML format:
+   ```toml
+   DATABASE_URL = "postgresql://user:password@host:port/database"
+   ```
+4. Save and redeploy
+
 ## Commands
 
 ### Initial Setup

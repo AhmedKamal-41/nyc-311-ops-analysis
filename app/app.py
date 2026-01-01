@@ -12,6 +12,7 @@ from sqlalchemy import text
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.db import get_engine
+from src.config import get_database_url
 
 st.set_page_config(
     page_title="NYC 311 Operations Dashboard",
@@ -200,9 +201,10 @@ with st.sidebar:
                 
                 # Step 3: Rebuild core table
                 st.info("**Step 3/4:** Rebuilding cleaned core data table...")
-                database_url = os.getenv('DATABASE_URL')
-                if not database_url:
-                    st.error("DATABASE_URL not set. Please set it in your environment.")
+                try:
+                    database_url = get_database_url()
+                except RuntimeError as e:
+                    st.error(str(e))
                     st.stop()
                 
                 env = os.environ.copy()

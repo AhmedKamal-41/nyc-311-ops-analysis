@@ -7,16 +7,20 @@ import sys
 import pandas as pd
 from sqlalchemy import create_engine, text
 
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from src.config import get_database_url
+
 
 def load_311_to_postgres():
     """
     Load NYC 311 data from CSV into Postgres.
     """
-    # Read DATABASE_URL from environment
-    database_url = os.getenv('DATABASE_URL')
-    if not database_url:
-        print("Error: DATABASE_URL environment variable not set.")
-        print("Please set DATABASE_URL or load it from .env file.")
+    # Read DATABASE_URL from environment or Streamlit secrets
+    try:
+        database_url = get_database_url()
+    except RuntimeError as e:
+        print(f"Error: {e}")
         sys.exit(1)
     
     csv_path = "data/raw/311.csv"
