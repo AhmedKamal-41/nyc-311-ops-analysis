@@ -1,0 +1,7 @@
+data/raw/
+data/processed/
+data/marts/
+.env
+__pycache__/
+.ipynb_checkpoints/
+
