@@ -19,14 +19,18 @@ A Streamlit analytics application for analyzing NYC 311 service requests. Pulls 
 | 🏠 Home | 📊 Overview & KPIs |
 |---|---|
 | ![Home](screenshots/home.png) | ![Overview](screenshots/overview.png) |
+| Landing page with a live request status pie chart, borough breakdown, and clickable cards to navigate each section. | Monthly KPI trends, resolution times, open vs closed volumes, and a full performance scorecard. |
 
 | 📋 Complaints Analysis | 🏛 Agency Performance |
 |---|---|
 | ![Complaints](screenshots/complaints.png) | ![Agency](screenshots/agency.png) |
+| Filter by borough and month to rank the top complaint types by volume, with a side-by-side table and chart. | Filter by department and case type together to track request volume and resolution speed across agencies. |
 
 **🗺 Live Map**
 
 ![Map](screenshots/map.png)
+
+GPS-tagged complaints plotted on a clean minimal basemap. Switch between Scatter Points (colored by case type) and Status View (red = open, green = closed) to spot geographic patterns across NYC.
 
 ---
 
