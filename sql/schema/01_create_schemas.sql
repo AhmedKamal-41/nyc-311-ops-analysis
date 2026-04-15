@@ -1,0 +1,5 @@
+-- Create schemas for NYC 311 analytics
+CREATE SCHEMA IF NOT EXISTS raw;
+CREATE SCHEMA IF NOT EXISTS core;
+CREATE SCHEMA IF NOT EXISTS marts;
+
