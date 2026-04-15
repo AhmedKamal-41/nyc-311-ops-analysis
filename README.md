@@ -10,7 +10,28 @@
 
 ---
 
-A Postgres-backed Streamlit analytics application for analyzing NYC 311 service requests. This project provides a complete data pipeline from raw API data to interactive visualizations, enabling analysis of complaint trends, agency performance, and resolution metrics across New York City boroughs.
+A Streamlit analytics application for analyzing NYC 311 service requests. Pulls live data directly from the NYC Open Data API — no database required. Provides interactive visualizations for complaint trends, agency performance, and resolution metrics across New York City boroughs.
+
+---
+
+## Screenshots
+
+### 🏠 Home — Overview & Quick Insights
+![Home Page](screenshots/home.png)
+
+### 📊 Overview & KPIs
+![Overview Page](screenshots/overview.png)
+
+### 📋 Complaints Analysis
+![Complaints Page](screenshots/complaints.png)
+
+### 🏛 Agency Performance
+![Agency Performance Page](screenshots/agency.png)
+
+### 🗺 Live Map
+![Live Map Page](screenshots/map.png)
+
+---
 
 ## Architecture
 
